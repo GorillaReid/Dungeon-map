@@ -66,6 +66,6 @@ while 1:
         print("Test")
 
     grid[player_y][player_x] = "*"
-    
+
     for row in grid:
         print("".join(row))
