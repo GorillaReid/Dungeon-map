@@ -29,11 +29,13 @@ def display_map():      #This is what displays the map
                 line += Back.WHITE + "  "
         screen += line + "\n"
     screen += Back.RESET + Fore.RED + "Life: "
+    
     life = ["!"] * i
     for x in range(len(life)):
         line = Back.LIGHTRED_EX + Fore.LIGHTRED_EX + "!!" + Back.BLACK + Fore.BLACK + "!"
         screen += line
     screen += "   " + Fore.LIGHTYELLOW_EX + Back.RESET + f"\n\nGold: {gold}\n" + Fore.CYAN + "Use W,A,S,D to move\n\n"
+    
     if player_y == height - 1:
         screen += Fore.GREEN + "Congratulations you won!\n"
     if i == 0:
@@ -138,3 +140,5 @@ while player_y != height - 1:       #loop that runs until the player gets to the
         i -= 1
     grid[player_y][player_x] = "*"
     display_map()       #displays the map
+
+input("Push i for the inventory or enter for another level")
