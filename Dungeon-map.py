@@ -29,14 +29,19 @@ def display_map():      #This is what displays the map
                 line += Back.WHITE + "  "
         screen += line + "\n"
     screen += Back.RESET + Fore.RED + "Life: "
-    for x in range(5):
+    life = ["!"] * i
+    for x in range(len(life)):
         line = Back.LIGHTRED_EX + Fore.LIGHTRED_EX + "!!" + Back.BLACK + Fore.BLACK + "!"
         screen += line
-    screen += Fore.LIGHTYELLOW_EX + Back.RESET + f"\n\nGold: {gold}\n" + Fore.CYAN + "Use W,A,S,D to move\n\n"
+    screen += "   " + Fore.LIGHTYELLOW_EX + Back.RESET + f"\n\nGold: {gold}\n" + Fore.CYAN + "Use W,A,S,D to move\n\n"
     if player_y == height - 1:
         screen += Fore.GREEN + "Congratulations you won!\n"
+    if i == 0:
+        screen += Fore.RED + "Game Over! You lost all your life\n\n"
+        print(screen, end="")
+        sys.exit()
     else:
-        screen += "                        \n"
+        screen += "                                 \n"
     print(screen, end="")
 
 def inventory():
@@ -50,6 +55,7 @@ gold = 0
 width = 30
 height = 24
 timeout = 5
+i = 5
 
 start_time = time.time()    #used to help prevent the map from taking to long to generate
 
@@ -129,6 +135,6 @@ while player_y != height - 1:       #loop that runs until the player gets to the
         value = random.randint(1, 3)
         gold += value
     if grid[player_y][player_x] == "!":
-        break
+        i -= 1
     grid[player_y][player_x] = "*"
     display_map()       #displays the map
