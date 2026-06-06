@@ -3,6 +3,7 @@ import readchar
 import sys
 import time
 from colorama import Fore, Back, Style, init
+import termios
 
 grid = []
 i = 5
@@ -41,6 +42,8 @@ def display_map():      #This is what displays the map
     
     if player_y == height - 1:
         screen += Fore.GREEN + "Congratulations you won!\n"
+        print(screen, end="")
+        clear()
     if i == 0:
         screen += Fore.RED + "Game Over! You lost all your life\n\n"
         print(screen, end="")
@@ -98,6 +101,7 @@ def generate_map():
         for place in chosen:
             if grid[y][place] == " ":
                 grid[y][place] = "!"
+    return start_x
 #------------------------------------------------------------------------------------------------------------------------------------
 def clear_screen():     #This clears the terminal before displaying the updated map to help reduce clutter
     print("\033[H", end="")
@@ -107,4 +111,38 @@ def inventory():
     screen = ""
     screen += "Hello"
     print(screen, end="")
-    #------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------
+def move():
+    global gold
+    global i
+    player_x = generate_map()      #resets the players position back to the start
+    player_y = 0
+    grid[player_y][player_x] = "*"
+    display_map()
+
+    while player_y != height - 1:       #loop that runs until the player gets to the bottom of the map
+        move = readchar.readkey().lower()
+        grid[player_y][player_x] = " "
+
+        if move == "s" and player_y + 1 < height and grid[player_y + 1][player_x] != "#":       #checks if the play eneted s and moves them down if they did
+            player_y += 1
+        if move == "w" and grid[player_y - 1][player_x] != "#":     #checks if the player entered w and moves them up if they did
+            player_y -= 1 
+        if move == "d" and grid[player_y][player_x + 1] != "#":     #checks if the player entered d and moves them up if they did
+            player_x += 1
+        if move == "a" and grid[player_y][player_x - 1] != "#":     #checks if the player entered a and moves them up if they did
+            player_x -= 1
+
+        if grid[player_y][player_x] == "%":     #checks if the player is on a treasure item and gives them a random amount of gold between 1-5
+            value = random.randint(1, 3)
+            gold += value
+        if grid[player_y][player_x] == "!":
+            i -= 1
+        grid[player_y][player_x] = "*"
+        display_map()       #displays the map
+
+def clear():
+    try:
+        termios.tcflush(sys.stdin, termios.TCIOFLUSH)
+    except:
+        pass
