@@ -22,13 +22,27 @@ def display_map():      #This is what displays the map
             elif char == "*":
                 line += Fore.BLUE + Back.BLUE + "**"
             elif char == "%":
-                line += Fore.YELLOW + Back.YELLOW + "%%"
+                line += Fore.LIGHTYELLOW_EX + Back.LIGHTYELLOW_EX + "%%"
             elif char == "!":
                 line += Fore.RED + Back.RED + "!!"
-            else:
+            elif char == " ":
                 line += Back.WHITE + "  "
         screen += line + "\n"
-    screen += Fore.CYAN + Back.RESET + f"\nGold: {gold}\nUse W,A,S,D to move\n\n"
+    screen += Back.RESET + Fore.RED + "Life: "
+    for x in range(5):
+        line = Back.LIGHTRED_EX + Fore.LIGHTRED_EX + "!!" + Back.BLACK + Fore.BLACK + "!"
+        screen += line
+    screen += Fore.LIGHTYELLOW_EX + Back.RESET + f"\n\nGold: {gold}\n" + Fore.CYAN + "Use W,A,S,D to move\n\n"
+    if player_y == height - 1:
+        screen += Fore.GREEN + "Congratulations you won!\n"
+    else:
+        screen += "                        \n"
+    print(screen, end="")
+
+def inventory():
+    clear_screen()
+    screen = ""
+    screen += "Hello"
     print(screen, end="")
 
 grid = []       #Declaring some int and var for the first time
@@ -108,12 +122,13 @@ while player_y != height - 1:       #loop that runs until the player gets to the
         player_x += 1
     if move == "a" and grid[player_y][player_x - 1] != "#":     #checks if the player entered a and moves them up if they did
         player_x -= 1
+    if move == "i":
+        inventory()
 
     if grid[player_y][player_x] == "%":     #checks if the player is on a treasure item and gives them a random amount of gold between 1-5
         value = random.randint(1, 3)
         gold += value
+    if grid[player_y][player_x] == "!":
+        break
     grid[player_y][player_x] = "*"
     display_map()       #displays the map
-
-    if player_y == height - 1:      #checks if the player reached the bottom, if so it tells them they won and the program ends (for now)
-        print("Congratulations you won!")
