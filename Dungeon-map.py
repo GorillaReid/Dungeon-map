@@ -4,7 +4,7 @@ import sys
 import os
 from colorama import Fore, Back , Style, init
 import readchar
-#hello
+
 init(autoreset=True)    #This automaticly resets the text color after each print
 
 def clear_screen():     #This clears the terminal before displaying the updated map to help reduce clutter
