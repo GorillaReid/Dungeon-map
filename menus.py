@@ -111,9 +111,9 @@ def new():     #This clears the terminal before displaying the updated map to he
     print("\033[H", end="")
 #------------------------------------------------------------------------------------------------------------------------------------
 def inventory():
-    new()
-    screen = ""
-    print(screen, end="")
+    clear()
+    print("WIP")
+    time.sleep(1)
 #------------------------------------------------------------------------------------------------------------------------------------
 def move():
     global gold
@@ -149,6 +149,19 @@ def move():
             print(Fore.RED + "Game Over! You lost all your life\n")
             sys.exit()
     time.sleep(1)
-
+#------------------------------------------------------------------------------------------------------------------------------------
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
+#------------------------------------------------------------------------------------------------------------------------------------
+def shop():
+    clear()
+    print(Fore.RED + "Press the corresponding button to what you want to buy" + Fore.YELLOW + "\nGold: ", gold, Fore.LIGHTRED_EX + "\nH: health potion")
+    shop = readchar.readkey().lower()
+
+    if shop == "h":
+        if gold >= 100:
+            print("yay")
+        else:
+            print("nah")
+        time.sleep(1)
+#------------------------------------------------------------------------------------------------------------------------------------
