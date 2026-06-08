@@ -2,21 +2,24 @@ import random
 import readchar
 import sys
 import time
+import os
 from colorama import Fore, Back, Style, init
-import termios
+
+init(autoreset=True)
 
 grid = []
 i = 5
 gold = 0
 height = 24
 width = 30
+empty = 0
 
 player_x = 0
 player_y = 0
 #------------------------------------------------------------------------------------------------------------------------------------
 def display_map():      #This is what displays the map
     time.sleep(.1)
-    clear_screen()
+    new()
     screen = ""
     for row in grid:
         line = ""
@@ -39,20 +42,12 @@ def display_map():      #This is what displays the map
         line = Back.LIGHTRED_EX + Fore.LIGHTRED_EX + "!!" + Back.BLACK + Fore.BLACK + "!"
         screen += line
     screen += "   " + Fore.LIGHTYELLOW_EX + Back.RESET + f"\n\nGold: {gold}\n" + Fore.CYAN + "Use W,A,S,D to move\n\n"
-    
-    if player_y == height - 1:
-        screen += Fore.GREEN + "Congratulations you won!\n"
-        print(screen, end="")
-        clear()
-    if i == 0:
-        screen += Fore.RED + "Game Over! You lost all your life\n\n"
-        print(screen, end="")
-        sys.exit()
-    else:
-        screen += "                                 \n"
     print(screen, end="")
 #------------------------------------------------------------------------------------------------------------------------------------
 def generate_map():
+    global grid
+    global empty
+    grid = []
     for y in range(height):     #generates the base structure of the map
         row = ["#"] * width
         grid.append(row)
@@ -77,6 +72,27 @@ def generate_map():
             player_y -= 1
 
     grid[height -1][player_x] = " "
+    
+    empty = 0
+    enemy = []
+    for y in range(height):
+        enemyr = []
+        for x in range(len(grid[y])):
+            if grid[y][x] == " ":
+                enemyr.append(x)
+                empty += 1
+        enemy.append(enemyr)
+
+    enemy_amount = empty // random.randint(20, 50)
+    for z in range(enemy_amount):
+        possible_rows = [y for y in range(height) if enemy[y]]
+        if not possible_rows:
+            break
+        y = random.choice(possible_rows)
+        x = random.choice(enemy[y])
+        if grid[y][x] == " ":
+            grid[y][x] = "!"
+            enemy[y].remove(x)
 
     treasure = []
     for y in range(height):
@@ -84,32 +100,19 @@ def generate_map():
             if grid[y][x] == " ":
                 treasure.append(x)
 
-        treasure_amount = len(treasure) // random.randint(50, 100)
+        treasure_amount = len(treasure) // (enemy_amount * 10)
         chosen = random.sample(treasure, treasure_amount)
         for place in chosen:
             if grid[y][place] == " ":
                 grid[y][place] = "%"
-
-    enemy = []
-    for y in range(height):
-        for x in range(len(grid[y])):
-            if grid[y][x] == " ":
-                enemy.append(x)
-
-        enemy_amount = len(enemy) // random.randint(50, 100)
-        chosen = random.sample(enemy, enemy_amount)
-        for place in chosen:
-            if grid[y][place] == " ":
-                grid[y][place] = "!"
     return start_x
 #------------------------------------------------------------------------------------------------------------------------------------
-def clear_screen():     #This clears the terminal before displaying the updated map to help reduce clutter
+def new():     #This clears the terminal before displaying the updated map to help reduce clutter
     print("\033[H", end="")
 #------------------------------------------------------------------------------------------------------------------------------------
 def inventory():
-    clear_screen()
+    new()
     screen = ""
-    screen += "Hello"
     print(screen, end="")
 #------------------------------------------------------------------------------------------------------------------------------------
 def move():
@@ -140,9 +143,12 @@ def move():
             i -= 1
         grid[player_y][player_x] = "*"
         display_map()       #displays the map
+        if player_y == height - 1:
+            print(Fore.GREEN + "Congratulations you won!\n")
+        if i <= 0:
+            print(Fore.RED + "Game Over! You lost all your life\n")
+            sys.exit()
+    time.sleep(1)
 
 def clear():
-    try:
-        termios.tcflush(sys.stdin, termios.TCIOFLUSH)
-    except:
-        pass
+    os.system('cls' if os.name == 'nt' else 'clear')

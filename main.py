@@ -6,12 +6,13 @@ import readchar
 import menus
 
 while 1:
-
-    print("Press Enter to play a second time")
+    menus.clear()
+    print(Fore.BLUE + "Press the corresponding button to what you want to do:" + Fore.LIGHTBLUE_EX + "\nL: Enter an Dungeon\nI: Open your inventory\nJ: Open the Shop")
+    print(menus.empty)
     menu = readchar.readkey().lower()
-    time.sleep(2)
-    if menu == "i":
+    time.sleep(1)
+    if menu == "j":
         while 1:
             menus.inventory()
-    if menu == "k":
+    if menu == "l":
         menus.move()
