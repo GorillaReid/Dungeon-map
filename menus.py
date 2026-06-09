@@ -13,6 +13,7 @@ gold = 0
 height = 24
 width = 30
 empty = 0
+level = 0
 
 player_x = 0
 player_y = 0
@@ -111,8 +112,14 @@ def new():     #This clears the terminal before displaying the updated map to he
     print("\033[H", end="")
 #------------------------------------------------------------------------------------------------------------------------------------
 def inventory():
+    global level
     clear()
-    print("WIP")
+    screen = ""
+    if level > 0:
+        screen += f"Weapon Level: {level}"
+    else:
+        screen = "You currently dont have anything in your inventory"
+    print(screen, end="")
     time.sleep(1)
 #------------------------------------------------------------------------------------------------------------------------------------
 def move():
@@ -136,6 +143,9 @@ def move():
         if move == "a" and grid[player_y][player_x - 1] != "#":     #checks if the player entered a and moves them up if they did
             player_x -= 1
 
+        if move == "m":
+            gold += 100
+
         if grid[player_y][player_x] == "%":     #checks if the player is on a treasure item and gives them a random amount of gold between 1-5
             value = random.randint(1, 3)
             gold += value
@@ -154,14 +164,26 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 #------------------------------------------------------------------------------------------------------------------------------------
 def shop():
+    global gold
+    global level
+    global i
     clear()
-    print(Fore.RED + "Press the corresponding button to what you want to buy" + Fore.YELLOW + "\nGold: ", gold, Fore.LIGHTRED_EX + "\nH: health potion")
+    print(Fore.RED + "Press the corresponding button to what you want to buy" + Fore.YELLOW + "\nGold: ", gold, Fore.LIGHTRED_EX + "\nL: Weapon Level\nM: Extra Life")
     shop = readchar.readkey().lower()
 
-    if shop == "h":
+    if shop == "l":
         if gold >= 100:
-            print("yay")
+            gold -= 100
+            print("You have sucsesfully upgraded your Weapon Level")
+            level += 1
         else:
-            print("nah")
-        time.sleep(1)
+            print(Fore.RED + f"You dont have enough gold for that, you need ", 100 - gold, Fore.RED + " more gold")
+    if shop == "m":
+        if gold >= 100:
+            gold -= 100
+            print("You have sucsesfully bought another Life!")
+            i += 1
+        else:
+            print(f"You dont have enough gold for that, you need ", 100 - gold, " more gold")
+    time.sleep(1)
 #------------------------------------------------------------------------------------------------------------------------------------

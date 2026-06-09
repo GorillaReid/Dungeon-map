@@ -7,7 +7,7 @@ import menus
 
 while 1:
     menus.clear()
-    print(Fore.BLUE + "Press the corresponding button to what you want to do:" + Fore.LIGHTBLUE_EX + "\nL: Enter an Dungeon\nI: Open your inventory\nJ: Open the Shop")
+    print(Fore.BLUE + "Press the corresponding button to what you want to do:" + Fore.LIGHTBLUE_EX + "\nL: Enter a Dungeon\nI: Open your inventory\nJ: Open the Shop")
     menu = readchar.readkey().lower()
     time.sleep(1)
     if menu == "i":
