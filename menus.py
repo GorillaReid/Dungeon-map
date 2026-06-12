@@ -79,7 +79,7 @@ def generate_map():
 
     grid[height -1][player_x] = " "
     
-    for y in range(height):                         #enemys
+    for y in range(height):                         #enemies
         for x in range(len(grid[y])):
             if grid[y][x] == " ":
                 place = random.randint(1, 100)
