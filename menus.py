@@ -86,7 +86,6 @@ def generate_map():
                 if place >= 95:
                     grid[y][x] = "!"
 
-
     for y in range(height):
         for x in range(len(grid[y])):
             if grid[y][x] == " ":
