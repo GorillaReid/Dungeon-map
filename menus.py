@@ -10,8 +10,13 @@ init(autoreset=True)
 grid = []
 i = 5
 gold = 0
+<<<<<<< HEAD
 height = 30
 width = 35
+=======
+height = 24
+width = 30
+>>>>>>> 850e0f2583816691d6cbea30a18992f9d1c4fac4
 empty = 0
 level = 1
 wlevel = 0
@@ -20,7 +25,10 @@ player_x = 0
 player_y = 0
 #------------------------------------------------------------------------------------------------------------------------------------
 def display_map():      #This is what displays the map
+<<<<<<< HEAD
     global empty
+=======
+>>>>>>> 850e0f2583816691d6cbea30a18992f9d1c4fac4
     time.sleep(.1)
     new()
     screen = ""
@@ -39,7 +47,10 @@ def display_map():      #This is what displays the map
                 line += Fore.GREEN + Back.GREEN + "$$"
             elif char == " ":
                 line += Back.WHITE + "  "
+<<<<<<< HEAD
                 empty += 1
+=======
+>>>>>>> 850e0f2583816691d6cbea30a18992f9d1c4fac4
         screen += line + "\n"
     screen += Back.RESET + Fore.RED + "Life: "
     
@@ -47,7 +58,11 @@ def display_map():      #This is what displays the map
     for x in range(len(life)):
         line = Back.LIGHTRED_EX + Fore.LIGHTRED_EX + "!!" + Back.BLACK + Fore.BLACK + "!"
         screen += line
+<<<<<<< HEAD
     screen += "   " + Fore.LIGHTYELLOW_EX + Back.RESET + f"\n\nGold: {gold}\n" + Fore.CYAN + f"Use W,A,S,D to move\n{empty}\n"
+=======
+    screen += "   " + Fore.LIGHTYELLOW_EX + Back.RESET + f"\n\nGold: {gold}\n" + Fore.CYAN + "Use W,A,S,D to move\n\n"
+>>>>>>> 850e0f2583816691d6cbea30a18992f9d1c4fac4
     print(screen, end="")
 #------------------------------------------------------------------------------------------------------------------------------------
 def generate_map():
@@ -66,6 +81,7 @@ def generate_map():
     while player_y < height - 1:    #loop runs until the path generation reaches the bottom
 
         grid[player_y][player_x] = " "
+<<<<<<< HEAD
         direction = random.choices(["down","left","right","up"], weights=[15, 40, 40, 5])[0]       #picks a random direction to generate the path
 
         if direction == "down":     #generates a path that goes down
@@ -73,12 +89,22 @@ def generate_map():
         elif direction == "left" and player_x > 1 and player_y > 1:      #generates a path that goes left
             player_x -= 1
         elif direction == "right" and player_x < width - 2 and player_y > 1:     #generates a path that goes right
+=======
+        direction = random.choices(["down","left","right","up"], weights=[25, 35, 35, 5])[0]       #picks a random direction to generate the path
+
+        if direction == "down":     #generates a path that goes down
+            player_y += 1
+        elif direction == "left" and player_x > 1:      #generates a path that goes left
+            player_x -= 1
+        elif direction == "right" and player_x < width - 2:     #generates a path that goes right
+>>>>>>> 850e0f2583816691d6cbea30a18992f9d1c4fac4
             player_x += 1
         elif direction == "up" and player_y > 1:        #generates a path that goes up (for more variety)
             player_y -= 1
 
     grid[height -1][player_x] = " "
     
+<<<<<<< HEAD
     for y in range(height):                         #enemys
         for x in range(len(grid[y])):
             if grid[y][x] == " ":
@@ -99,6 +125,51 @@ def generate_map():
                 place = random.randint(1, 1000)
                 if place > 999:
                     grid[y][x] = "$"
+=======
+    enemy = []
+    for y in range(height):
+        enemyr = []
+        for x in range(len(grid[y])):
+            if grid[y][x] == " ":
+                enemyr.append(x)
+                empty += 1
+        enemy.append(enemyr)
+
+    enemy_amount = empty // random.randint(20, 50)
+    for z in range(enemy_amount):
+        possible_rows = [y for y in range(height) if enemy[y]]
+        if not possible_rows:
+            break
+        y = random.choice(possible_rows)
+        x = random.choice(enemy[y])
+        if grid[y][x] == " ":
+            grid[y][x] = "!"
+            enemy[y].remove(x)
+
+    treasure = []
+    for y in range(height):
+        for x in range(len(grid[y])):
+            if grid[y][x] == " ":
+                treasure.append(x)
+
+        treasure_amount = len(treasure) // (enemy_amount * 20)
+        chosen = random.sample(treasure, treasure_amount)
+        for place in chosen:
+            if grid[y][place] == " ":
+                grid[y][place] = "%"
+    key = []
+    for y in range(height):
+        for x in range(len(grid[y])):
+            if grid[y][x] == " ":
+                key.append(x)
+
+        key_amount = len(key) // (enemy_amount+treasure_amount * 150)
+        chosen = random.sample(key, key_amount)
+        for place in chosen:
+            for g in range(1):
+                if grid[y][place] == " ":
+                    grid[y][place] = "$"
+>>>>>>> 850e0f2583816691d6cbea30a18992f9d1c4fac4
     return start_x
 #------------------------------------------------------------------------------------------------------------------------------------
 def new():     #This clears the terminal before displaying the updated map to help reduce clutter
@@ -119,7 +190,10 @@ def move():
     global gold
     global i
     global level
+<<<<<<< HEAD
     global empty
+=======
+>>>>>>> 850e0f2583816691d6cbea30a18992f9d1c4fac4
     player_x = generate_map()      #resets the players position back to the start
     player_y = 0
     grid[player_y][player_x] = "*"
@@ -137,11 +211,17 @@ def move():
             player_x += 1
         if move == "a" and grid[player_y][player_x - 1] != "#":     #checks if the player entered a and moves them up if they did
             player_x -= 1
+<<<<<<< HEAD
         if move == "m":
             gold += 100
         if move == "r":
             empty = 0
             generate_map()
+=======
+
+        if move == "m":
+            gold += 100
+>>>>>>> 850e0f2583816691d6cbea30a18992f9d1c4fac4
 
         if grid[player_y][player_x] == "%":     #checks if the player is on a treasure item and gives them a random amount of gold between 1-5
             value = random.randint(1, 3)
