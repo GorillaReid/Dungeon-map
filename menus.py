@@ -79,21 +79,21 @@ def generate_map():
 
     grid[height -1][player_x] = " "
     
-    for y in range(height):
+    for y in range(height):                         #enemys
         for x in range(len(grid[y])):
             if grid[y][x] == " ":
                 place = random.randint(1, 100)
                 if place >= 95:
                     grid[y][x] = "!"
 
-    for y in range(height):
+    for y in range(height):                         #gold
         for x in range(len(grid[y])):
             if grid[y][x] == " ":
                 place = random.randint(1, 100)
                 if place >= 95:
                     grid[y][x] = "%"
 
-    for y in range(height):
+    for y in range(height):                         #keys
         for x in range(len(grid[y])):
             if grid[y][x] == " ":
                 place = random.randint(1, 1000)
